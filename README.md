@@ -1,4 +1,7 @@
+
 # loudp2p
+
+![loudp2p](logo.png)
 
 loudp2p is an experimental peer to peer network for music streaming. The idea comes after a few personal experiments with browser-based Bittorrent streaming, see [ng-chunked-audio](https://github.com/matiasinsaurralde/ng-chunked-audio). The rest was mostly based on [torrent-stream](https://github.com/mafintosh/torrent-stream).
 
