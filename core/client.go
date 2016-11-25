@@ -15,7 +15,7 @@ type Client struct {
   Peers []Peer
 }
 
-func NewClient() Client {
+func NewClient(settings *Settings) Client {
   log.Println("Starting client...")
   client := Client{
     Peers: make([]Peer, 0),

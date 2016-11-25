@@ -6,7 +6,7 @@ import(
 
 type Server struct {}
 
-func NewServer() Server {
+func NewServer(settings *Settings) Server {
   return Server{}
 }
 
