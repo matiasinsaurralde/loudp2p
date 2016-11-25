@@ -1,9 +1,7 @@
-package client
+package loudp2p
 
 import(
   "log"
-
-  "github.com/matiasinsaurralde/loudp2p/peer"
 )
 
 var(
@@ -14,17 +12,17 @@ var(
 )
 
 type Client struct {
-  Peers []loudp2p.Peer
+  Peers []Peer
 }
 
 func NewClient() Client {
   log.Println("Starting client...")
   client := Client{
-    Peers: make([]loudp2p.Peer, 0),
+    Peers: make([]Peer, 0),
   }
 
   for _, peerAddr := range InitialPeerList {
-    peer := loudp2p.Peer{peerAddr}
+    peer := Peer{peerAddr}
     client.Peers = append(client.Peers, peer)
   }
 
@@ -39,6 +37,6 @@ func(c *Client) StartDiscovery() {
   }
 }
 
-func(c *Client) AnnounceTo(peer loudp2p.Peer) {
+func(c *Client) AnnounceTo(peer Peer) {
   log.Println("Announcing to:", peer)
 }

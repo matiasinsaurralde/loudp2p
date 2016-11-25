@@ -3,16 +3,15 @@ package main
 import(
   "log"
 
-  loudp2pclient "github.com/matiasinsaurralde/loudp2p/client"
-  loudp2pserver "github.com/matiasinsaurralde/loudp2p/server"
+  loudp2p "github.com/matiasinsaurralde/loudp2p/core"
 )
 
-var client *loudp2pclient.Client
+var client *loudp2p.Client
 
 func main() {
   log.Println("Init...")
-  client := loudp2pclient.NewClient()
-  server := loudp2pserver.NewServer()
+  client := loudp2p.NewClient()
+  server := loudp2p.NewServer()
   go client.StartDiscovery()
   go server.Start()
   for {}
