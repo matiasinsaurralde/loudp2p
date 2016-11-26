@@ -58,7 +58,12 @@ func main() {
 		log.Println("Couldn't initialize client!")
 		panic(err)
 	}
-	server = loudp2p.NewServer(settings)
+
+	server, err = loudp2p.NewServer(settings)
+	if err != nil {
+		log.Println("Couldn't initialize server!")
+		panic(err)
+	}
 
 	// go client.StartDiscovery()
 	// go server.Start()

@@ -8,8 +8,8 @@ import (
 type Server struct{}
 
 // NewServer initializes a new server using the data from settings.
-func NewServer(settings *Settings) Server {
-	return Server{}
+func NewServer(settings *Settings) (server Server, err error) {
+	return server, err
 }
 
 // Start starts the server.
