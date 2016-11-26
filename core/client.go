@@ -1,6 +1,7 @@
 package loudp2p
 
 import (
+	"errors"
 	"log"
 )
 
@@ -17,9 +18,20 @@ type Client struct {
 }
 
 // NewClient initializes a new client, using the data from settings.
-func NewClient(settings *Settings) Client {
+func NewClient(settings *Settings) (client Client, err error) {
 	// log.Println("Starting client.")
-	client := Client{
+
+	if settings == nil {
+		err = errors.New("Invalid settings")
+		return client, err
+	}
+
+	err = settings.Validate()
+	if err != nil {
+		return client, err
+	}
+
+	client = Client{
 		Peers: make([]Peer, 0),
 	}
 
@@ -28,7 +40,7 @@ func NewClient(settings *Settings) Client {
 		client.Peers = append(client.Peers, peer)
 	}
 
-	return client
+	return client, err
 }
 
 // StartDiscovery starts the peer discovery process.
