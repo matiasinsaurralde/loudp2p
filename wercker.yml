@@ -1,0 +1,16 @@
+box: golang
+
+build:
+  steps:
+    - setup-go-workspace
+
+    - script:
+        name: go get
+        code: |
+          go get
+          cd ./core && go get
+
+    - script:
+        name: go test
+        code: |
+          go test ./core
