@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package loud;
+
+message HelloMessage {
+    string origin = 1;
+}

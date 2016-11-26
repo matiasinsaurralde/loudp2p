@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package loud;
+
+import "hello_message.proto";
+import "dummy_message.proto";
+
+service LoudServer {
+    rpc Hello (HelloMessage) returns (DummyMessage) {}
+}
