@@ -14,10 +14,10 @@ import (
 )
 
 // GenerateKeys will generate the peer initial keys and ID.
-func GenerateKeys() (privateKeyBytes []byte, publicKeyBytes []byte, peerID string) {
-	privateKey, _ := ecdsa.GenerateKey(elliptic.P224(), rand.Reader)
-	privateKeyBytes, _ = x509.MarshalECPrivateKey(privateKey)
-	publicKeyBytes, _ = x509.MarshalPKIXPublicKey(&privateKey.PublicKey)
+func GenerateKeys() (privateKey *ecdsa.PrivateKey, privateKeyBytes []byte, publicKey *ecdsa.PublicKey, publicKeyBytes []byte, peerID string, err error) {
+	privateKey, err = ecdsa.GenerateKey(elliptic.P224(), rand.Reader)
+	privateKeyBytes, err = x509.MarshalECPrivateKey(privateKey)
+	publicKeyBytes, err = x509.MarshalPKIXPublicKey(&privateKey.PublicKey)
 
 	shaHash := sha256.New()
 	shaHash.Write(publicKeyBytes)
@@ -29,7 +29,7 @@ func GenerateKeys() (privateKeyBytes []byte, publicKeyBytes []byte, peerID strin
 
 	peerID = base58check.Encode("00", hash)
 
-	return privateKeyBytes, publicKeyBytes, peerID
+	return privateKey, privateKeyBytes, &privateKey.PublicKey, publicKeyBytes, peerID, err
 }
 
 // ParseKeys will parse existing key buffers and return the appropiate data structures.
