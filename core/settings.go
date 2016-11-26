@@ -2,6 +2,7 @@ package loudp2p
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"log"
 )
@@ -23,6 +24,18 @@ func (s *Settings) Persist() (err error) {
 	var data []byte
 	data, err = json.Marshal(s)
 	err = ioutil.WriteFile(settingsFilename, data, 0700)
+	return err
+}
+
+// Validate will validate the settings fields.
+func (s *Settings) Validate() (err error) {
+	if s.PubKey == nil {
+		err = errors.New("No public key is present")
+	} else if s.PrivKey == nil {
+		err = errors.New("No public key is present")
+	} else if s.PeerID == "" {
+		err = errors.New("No peer ID is present")
+	}
 	return err
 }
 
