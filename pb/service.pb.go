@@ -26,64 +26,64 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// Client API for LoudServer service
+// Client API for Loud service
 
-type LoudServerClient interface {
+type LoudClient interface {
 	Hello(ctx context.Context, in *HelloMessage, opts ...grpc.CallOption) (*DummyMessage, error)
 }
 
-type loudServerClient struct {
+type loudClient struct {
 	cc *grpc.ClientConn
 }
 
-func NewLoudServerClient(cc *grpc.ClientConn) LoudServerClient {
-	return &loudServerClient{cc}
+func NewLoudClient(cc *grpc.ClientConn) LoudClient {
+	return &loudClient{cc}
 }
 
-func (c *loudServerClient) Hello(ctx context.Context, in *HelloMessage, opts ...grpc.CallOption) (*DummyMessage, error) {
+func (c *loudClient) Hello(ctx context.Context, in *HelloMessage, opts ...grpc.CallOption) (*DummyMessage, error) {
 	out := new(DummyMessage)
-	err := grpc.Invoke(ctx, "/loud.LoudServer/Hello", in, out, c.cc, opts...)
+	err := grpc.Invoke(ctx, "/loud.Loud/Hello", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// Server API for LoudServer service
+// Server API for Loud service
 
-type LoudServerServer interface {
+type LoudServer interface {
 	Hello(context.Context, *HelloMessage) (*DummyMessage, error)
 }
 
-func RegisterLoudServerServer(s *grpc.Server, srv LoudServerServer) {
-	s.RegisterService(&_LoudServer_serviceDesc, srv)
+func RegisterLoudServer(s *grpc.Server, srv LoudServer) {
+	s.RegisterService(&_Loud_serviceDesc, srv)
 }
 
-func _LoudServer_Hello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Loud_Hello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HelloMessage)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LoudServerServer).Hello(ctx, in)
+		return srv.(LoudServer).Hello(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/loud.LoudServer/Hello",
+		FullMethod: "/loud.Loud/Hello",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LoudServerServer).Hello(ctx, req.(*HelloMessage))
+		return srv.(LoudServer).Hello(ctx, req.(*HelloMessage))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _LoudServer_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "loud.LoudServer",
-	HandlerType: (*LoudServerServer)(nil),
+var _Loud_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "loud.Loud",
+	HandlerType: (*LoudServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Hello",
-			Handler:    _LoudServer_Hello_Handler,
+			Handler:    _Loud_Hello_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -93,13 +93,12 @@ var _LoudServer_serviceDesc = grpc.ServiceDesc{
 func init() { proto.RegisterFile("service.proto", fileDescriptor2) }
 
 var fileDescriptor2 = []byte{
-	// 117 bytes of a gzipped FileDescriptorProto
+	// 111 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0xe2, 0xe2, 0x2d, 0x4e, 0x2d, 0x2a,
 	0xcb, 0x4c, 0x4e, 0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0xc9, 0xc9, 0x2f, 0x4d, 0x91,
 	0x12, 0xce, 0x48, 0xcd, 0xc9, 0xc9, 0x8f, 0xcf, 0x4d, 0x2d, 0x2e, 0x4e, 0x4c, 0x87, 0x4a, 0x49,
-	0x09, 0xa7, 0x94, 0xe6, 0xe6, 0x56, 0xa2, 0x0a, 0x1a, 0xd9, 0x73, 0x71, 0xf9, 0xe4, 0x97, 0xa6,
-	0x04, 0xa7, 0x16, 0x95, 0xa5, 0x16, 0x09, 0x19, 0x72, 0xb1, 0x7a, 0x80, 0x74, 0x0a, 0x09, 0xe9,
-	0x81, 0xcc, 0xd1, 0x03, 0x73, 0x7c, 0x21, 0x1a, 0xa4, 0xa0, 0x62, 0x2e, 0x20, 0x53, 0xa0, 0x62,
-	0x4a, 0x0c, 0x49, 0x6c, 0x60, 0x73, 0x8c, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0x29, 0x6d, 0x37,
-	0xbf, 0x88, 0x00, 0x00, 0x00,
+	0x09, 0xa7, 0x94, 0xe6, 0xe6, 0x56, 0xa2, 0x0a, 0x1a, 0x59, 0x72, 0xb1, 0xf8, 0xe4, 0x97, 0xa6,
+	0x08, 0x19, 0x72, 0xb1, 0x7a, 0x80, 0xf4, 0x08, 0x09, 0xe9, 0x81, 0x4c, 0xd0, 0x03, 0x73, 0x7c,
+	0x21, 0x4a, 0xa5, 0xa0, 0x62, 0x2e, 0x20, 0xfd, 0x50, 0x31, 0x25, 0x86, 0x24, 0x36, 0xb0, 0x09,
+	0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0x4e, 0x4f, 0xd9, 0x8b, 0x82, 0x00, 0x00, 0x00,
 }

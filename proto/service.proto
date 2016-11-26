@@ -5,6 +5,6 @@ package loud;
 import "hello_message.proto";
 import "dummy_message.proto";
 
-service LoudServer {
+service Loud {
     rpc Hello (HelloMessage) returns (DummyMessage) {}
 }
