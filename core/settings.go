@@ -17,8 +17,8 @@ const (
 
 // Settings holds the key pair & peer ID.
 type Settings struct {
-	PrivateKey *ecdsa.PrivateKey
-	PublicKey  *ecdsa.PublicKey
+	PrivateKey *ecdsa.PrivateKey `json:"-"`
+	PublicKey  *ecdsa.PublicKey  `json:"-"`
 
 	PrivKeyBytes []byte
 	PubKeyBytes  []byte
