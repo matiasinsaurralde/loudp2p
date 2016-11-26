@@ -1,6 +1,9 @@
 
 # loudp2p
 
+[![MIT License][license-image]][license-url]
+[![GoDoc](https://godoc.org/github.com/matiasinsaurralde/loudp2p?status.svg)](https://godoc.org/github.com/matiasinsaurralde/loudp2p)
+
 ![loudp2p](assets/logo.png)
 
 loudp2p is an experimental peer to peer network for music streaming. The idea comes after a few personal experiments with browser-based Bittorrent streaming, see [ng-chunked-audio](https://github.com/matiasinsaurralde/ng-chunked-audio). The rest was mostly based on [torrent-stream](https://github.com/mafintosh/torrent-stream).
@@ -40,3 +43,7 @@ In the blockchain world, a light client represents a network client that doesn't
 ## Licensing
 
 [MIT](LICENSE.md)
+
+[license-url]: LICENSE
+
+[license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
