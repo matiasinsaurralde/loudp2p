@@ -35,7 +35,7 @@ A peer may assume different cooperation roles during its operation, making it ea
 
 ## Light clients
 
-In the blockchain world, a light client represents a network client that doesn't need a copy of the whole blockchain to participate. In the context of this project, think about a mobile phone with a 3G connection, running a minimal client with support for peer discovery and streams.
+In the blockchain world, a light client represents a network client that doesn't need a copy of the whole blockchain to operate inside the network. In the context of this project, think about a mobile phone with a 3G connection, running a minimal client with support for peer discovery and streams.
 
 ## Licensing
 
