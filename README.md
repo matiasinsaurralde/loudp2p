@@ -3,6 +3,7 @@
 
 [![MIT License][license-image]][license-url]
 [![GoDoc](https://godoc.org/github.com/matiasinsaurralde/loudp2p?status.svg)](https://godoc.org/github.com/matiasinsaurralde/loudp2p)
+[![wercker status](https://app.wercker.com/status/03d6050e5c3d48f8139ae9493f172b30/s/master "wercker status")](https://app.wercker.com/project/byKey/03d6050e5c3d48f8139ae9493f172b30)
 
 ![loudp2p](assets/logo.png)
 
