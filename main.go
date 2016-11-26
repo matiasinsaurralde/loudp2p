@@ -19,9 +19,9 @@ func main() {
 		log.Println("No keys present, generating.")
 		privKey, pubKey, peerID := crypto.GenerateKeys()
 		settings = &loudp2p.Settings{
-			PrivKey: privKey,
-			PubKey:  pubKey,
-			PeerID:  peerID,
+			PrivKeyBytes: privKey,
+			PubKeyBytes:  pubKey,
+			PeerID:       peerID,
 		}
 		err = settings.Persist()
 		if err != nil {
