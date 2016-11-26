@@ -34,12 +34,14 @@ func main() {
 
   log.Println("Peer ID is", settings.PeerId)
 
-  client := loudp2p.NewClient(settings)
-  server := loudp2p.NewServer(settings)
+  var client loudp2p.Client
+  var server loudp2p.Server
 
-  log.Println(1,client,server)
+  client = loudp2p.NewClient(settings)
+  server = loudp2p.NewServer(settings)
 
   // go client.StartDiscovery()
   // go server.Start()
   for {}
+  log.Println(1,client,server)
 }
