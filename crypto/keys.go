@@ -10,7 +10,7 @@ import (
 
 	"golang.org/x/crypto/ripemd160"
 
-	"github.com/matiasinsaurralde/hellobitcoin/base58check"
+	base58 "github.com/matiasinsaurralde/loudp2p/crypto/base58check"
 )
 
 // GenerateKeys will generate the peer initial keys and ID.
@@ -27,7 +27,7 @@ func GenerateKeys() (privateKey *ecdsa.PrivateKey, privateKeyBytes []byte, publi
 	ripemd160Hash.Write(hash)
 	hash = ripemd160Hash.Sum(nil)
 
-	peerID = base58check.Encode("00", hash)
+	peerID = base58.Encode("00", hash)
 
 	return privateKey, privateKeyBytes, &privateKey.PublicKey, publicKeyBytes, peerID, err
 }
