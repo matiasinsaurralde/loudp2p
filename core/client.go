@@ -43,8 +43,8 @@ func NewClient(settings *Settings) (client Client, err error) {
 	return client, err
 }
 
-// StartDiscovery starts the peer discovery process.
-func (c *Client) StartDiscovery() {
+// Start starts the peer discovery process.
+func (c *Client) Start() {
 	log.Println("Discovery starts.")
 
 	for _, peer := range c.Peers {
