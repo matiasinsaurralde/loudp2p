@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 
+	"crypto/ecdsa"
+
 	loudp2p "github.com/matiasinsaurralde/loudp2p/core"
 	crypto "github.com/matiasinsaurralde/loudp2p/crypto"
 )
@@ -17,10 +19,24 @@ func main() {
 
 	if settings == nil {
 		log.Println("No keys present, generating.")
-		privKey, pubKey, peerID := crypto.GenerateKeys()
+
+		var privateKey *ecdsa.PrivateKey
+		var publicKey *ecdsa.PublicKey
+		var privateKeyBytes, publicKeyBytes []byte
+		var peerID string
+
+		privateKey, privateKeyBytes, publicKey, publicKeyBytes, peerID, err = crypto.GenerateKeys()
+
+		if err != nil {
+			log.Println("Couldn't generate keys!")
+			panic(err)
+		}
+
 		settings = &loudp2p.Settings{
-			PrivKeyBytes: privKey,
-			PubKeyBytes:  pubKey,
+			PrivateKey:   privateKey,
+			PublicKey:    publicKey,
+			PrivKeyBytes: privateKeyBytes,
+			PubKeyBytes:  publicKeyBytes,
 			PeerID:       peerID,
 		}
 		err = settings.Persist()
