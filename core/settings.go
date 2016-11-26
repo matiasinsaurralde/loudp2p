@@ -12,7 +12,8 @@ import (
 )
 
 const (
-	defaultSettingsFilename = "settings.json"
+	DefaultSettingsFilename = "settings.json"
+	DefaultRPCPort          = 5555
 )
 
 // Settings holds the key pair & peer ID.
@@ -23,13 +24,16 @@ type Settings struct {
 	PrivKeyBytes []byte
 	PubKeyBytes  []byte
 	PeerID       string
+
+	IgnoreInitialPeers bool `json:"-"`
+	RPCPort            int64
 }
 
 // LoadSettings will load the settings from disk.
 func LoadSettings() (settings *Settings) {
 	var data []byte
 	var err error
-	data, err = ioutil.ReadFile(defaultSettingsFilename)
+	data, err = ioutil.ReadFile(DefaultSettingsFilename)
 	if err != nil {
 		return nil
 	}
@@ -51,7 +55,7 @@ func (s *Settings) Persist() (err error) {
 	log.Println("Writing settings to disk.")
 	var data []byte
 	data, err = json.Marshal(s)
-	err = ioutil.WriteFile(defaultSettingsFilename, data, 0700)
+	err = ioutil.WriteFile(DefaultSettingsFilename, data, 0700)
 	return err
 }
 
