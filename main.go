@@ -65,6 +65,8 @@ func main() {
 		panic(err)
 	}
 
+	go client.Start()
+
 	// go client.StartDiscovery()
 	// go server.Start()
 	for {
