@@ -1,14 +1,28 @@
 package loudp2p
 
 import (
+	"crypto/ecdsa"
+	"crypto/elliptic"
+	"crypto/rand"
+	"crypto/x509"
 	"testing"
 )
 
 const (
-	testPrivKey = "abc"
-	testPubKey  = "abc"
-	testPeerID  = "1Jxm2g1B4AFdBNjcfXFsVjtiU2d748cS8a"
+	testPeerID = "1Jxm2g1B4AFdBNjcfXFsVjtiU2d748cS8a"
 )
+
+var (
+	testPrivKey     *ecdsa.PrivateKey
+	privateKeyBytes []byte
+	publicKeyBytes  []byte
+)
+
+func init() {
+	testPrivKey, _ := ecdsa.GenerateKey(elliptic.P224(), rand.Reader)
+	privateKeyBytes, _ = x509.MarshalECPrivateKey(testPrivKey)
+	publicKeyBytes, _ = x509.MarshalPKIXPublicKey(&testPrivKey.PublicKey)
+}
 
 func TestClientInitialization(t *testing.T) {
 	var err error
@@ -25,27 +39,29 @@ func TestClientInitialization(t *testing.T) {
 		t.Fatal("A client with an empty settings data structure must fail to initialize.")
 	}
 
-	settings = Settings{PrivKey: []byte(testPrivKey)}
+	settings = Settings{PrivKeyBytes: privateKeyBytes}
 	_, err = NewClient(&settings)
 	if err == nil {
 		t.Fatal("A client with no public key must fail to initialize.")
 	}
 
-	settings = Settings{PubKey: []byte(testPubKey)}
+	settings = Settings{PubKeyBytes: publicKeyBytes}
 	_, err = NewClient(&settings)
 	if err == nil {
 		t.Fatal("A client with no private key must fail to initialize.")
 	}
 
-	settings = Settings{PrivKey: []byte(testPrivKey), PubKey: []byte(testPubKey)}
+	settings = Settings{PrivKeyBytes: privateKeyBytes, PubKeyBytes: publicKeyBytes}
 	_, err = NewClient(&settings)
 	if err == nil {
 		t.Fatal("A client with no peerID must fail to initialize.")
 	}
 
-	settings = Settings{PrivKey: []byte(testPrivKey), PubKey: []byte(testPubKey), PeerID: testPeerID}
+	settings = Settings{PrivKeyBytes: privateKeyBytes, PubKeyBytes: publicKeyBytes, PeerID: testPeerID}
+	settings.LoadKeys()
 	_, err = NewClient(&settings)
 	if err != nil {
+		t.Fatal(err)
 		t.Fatal("A client with a key pair and a peer ID should initialize correctly.")
 	}
 
