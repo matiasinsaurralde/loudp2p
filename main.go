@@ -14,6 +14,8 @@ func main() {
 
 	var err error
 
+	// Load settings:
+
 	var settings *loudp2p.Settings
 	settings = loudp2p.LoadSettings()
 
@@ -38,6 +40,7 @@ func main() {
 			PrivKeyBytes: privateKeyBytes,
 			PubKeyBytes:  publicKeyBytes,
 			PeerID:       peerID,
+			RPCPort:      loudp2p.DefaultRPCPort,
 		}
 		err = settings.Persist()
 		if err != nil {
@@ -48,27 +51,32 @@ func main() {
 		log.Println("Using existing keys.")
 	}
 
+	// Attach event system:
+	var events loudp2p.EventHandler
+	events = loudp2p.NewEventHandler()
+
+	settings.RPCPort = 2016
+
 	log.Println("Peer ID is", settings.PeerID)
 
 	var client loudp2p.Client
 	var server loudp2p.Server
 
-	client, err = loudp2p.NewClient(settings)
+	client, err = loudp2p.NewClient(settings, &events)
 	if err != nil {
 		log.Println("Couldn't initialize client!")
 		panic(err)
 	}
 
-	server, err = loudp2p.NewServer(settings)
+	server, err = loudp2p.NewServer(settings, &events)
 	if err != nil {
 		log.Println("Couldn't initialize server!")
 		panic(err)
 	}
 
 	go client.Start()
+	go server.Start()
 
-	// go client.StartDiscovery()
-	// go server.Start()
 	for {
 	}
 	log.Println(1, client, server)
