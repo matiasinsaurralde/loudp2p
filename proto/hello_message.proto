@@ -4,4 +4,5 @@ package loud;
 
 message HelloMessage {
     string origin = 1;
+    int64 rpc_port = 2;
 }
