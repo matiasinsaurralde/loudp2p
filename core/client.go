@@ -3,10 +3,15 @@ package loudp2p
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
+	"time"
 
 	"google.golang.org/grpc"
 
+	"strings"
+
+	"github.com/golang/protobuf/ptypes"
 	pb "github.com/matiasinsaurralde/loudp2p/pb"
 )
 
@@ -21,10 +26,11 @@ var (
 type Client struct {
 	Peers    []Peer
 	Settings *Settings
+	Events   *EventHandler
 }
 
 // NewClient initializes a new client, using the data from settings.
-func NewClient(settings *Settings) (client Client, err error) {
+func NewClient(settings *Settings, events *EventHandler) (client Client, err error) {
 	if settings == nil {
 		err = errors.New("Invalid settings")
 		return client, err
@@ -41,6 +47,12 @@ func NewClient(settings *Settings) (client Client, err error) {
 	client = Client{
 		Peers:    make([]Peer, 0),
 		Settings: settings,
+		Events:   events,
+	}
+
+	if settings.IgnoreInitialPeers {
+		log.Println("Ignoring initial peers.")
+		return client, err
 	}
 
 	for _, peerAddr := range initialPeerList {
@@ -55,10 +67,39 @@ func NewClient(settings *Settings) (client Client, err error) {
 
 // Start starts the peer discovery process.
 func (c *Client) Start() {
-	log.Println("Discovery starts.")
+	go c.HandleEvents()
 
 	for _, peer := range c.Peers {
 		go c.AnnounceTo(peer)
+	}
+}
+
+// Event handler:
+func (c *Client) HandleEvents() {
+	log.Println("Client is listening for events.")
+	eventsChan := c.Events.AddListener()
+	for {
+		event := <-*eventsChan
+		log.Println("Client gets event:", event)
+
+		switch event.Type {
+		case SayHello:
+			log.Println("Client received a request to say hello to:", event.Metadata)
+
+			eventData := event.Metadata.(map[int]interface{})
+
+			var peerIP string
+			peerIP = strings.Split(eventData[HelloPeerAddr].(string), ":")[0]
+
+			var peerRPCPort int64
+			peerRPCPort = eventData[HelloRPCPort].(int64)
+
+			peer := Peer{
+				Address: fmt.Sprintf("%s:%d", peerIP, peerRPCPort),
+			}
+			log.Println("peer", peer)
+			// go c.AnnounceTo(peer)
+		}
 	}
 }
 
@@ -74,8 +115,40 @@ func (c *Client) AnnounceTo(peer Peer) {
 
 	peer.Client = pb.NewLoudClient(peer.Conn)
 	helloMessage := pb.HelloMessage{
-		Origin: c.Settings.PeerID,
+		Origin:  c.Settings.PeerID,
+		RpcPort: c.Settings.RPCPort,
 	}
 
 	peer.Client.Hello(context.Background(), &helloMessage)
+
+	dispatchClient, err := peer.Client.Dispatch(context.Background())
+
+	if err != nil {
+		log.Println("Couldn't announce!")
+		return
+	}
+
+	go func(client pb.Loud_DispatchClient) {
+		for {
+			object, err := client.Recv()
+			log.Println("Receiving:", object, err)
+		}
+	}(dispatchClient)
+
+	go func(client pb.Loud_DispatchClient) {
+		for {
+			helloMessage := pb.HelloMessage{
+				Origin:  c.Settings.PeerID,
+				RpcPort: c.Settings.RPCPort,
+			}
+			out, err := ptypes.MarshalAny(&helloMessage)
+			log.Println("Sending:", out, err)
+			client.Send(out)
+			time.Sleep(1 * time.Second)
+			// client.Send(helloMessage)
+		}
+	}(dispatchClient)
+}
+
+func HandleExchange() {
 }
