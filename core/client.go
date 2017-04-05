@@ -74,7 +74,7 @@ func (c *Client) Start() {
 	}
 }
 
-// Event handler:
+// HandleEvents listens for events:
 func (c *Client) HandleEvents() {
 	log.Println("Client is listening for events.")
 	eventsChan := c.Events.AddListener()

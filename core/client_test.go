@@ -36,8 +36,7 @@ func TestClientInitialization(t *testing.T) {
 		t.Fatal("A client with no settings must fail to initialize.")
 	}
 
-	var settings Settings
-	settings = Settings{}
+	var settings = Settings{}
 	_, err = NewClient(&settings, &testEventHandler)
 	if err == nil {
 		t.Fatal("A client with an empty settings data structure must fail to initialize.")

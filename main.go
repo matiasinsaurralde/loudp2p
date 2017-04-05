@@ -15,9 +15,7 @@ func main() {
 	var err error
 
 	// Load settings:
-
-	var settings *loudp2p.Settings
-	settings = loudp2p.LoadSettings()
+	var settings = loudp2p.LoadSettings()
 
 	if settings == nil {
 		log.Println("No keys present, generating.")
@@ -52,8 +50,7 @@ func main() {
 	}
 
 	// Attach event system:
-	var events loudp2p.EventHandler
-	events = loudp2p.NewEventHandler()
+	var events = loudp2p.NewEventHandler()
 
 	settings.RPCPort = 2016
 

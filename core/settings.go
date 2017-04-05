@@ -55,8 +55,10 @@ func (s *Settings) Persist() (err error) {
 	log.Println("Writing settings to disk.")
 	var data []byte
 	data, err = json.Marshal(s)
-	err = ioutil.WriteFile(DefaultSettingsFilename, data, 0700)
-	return err
+	if err != nil {
+		return err
+	}
+	return ioutil.WriteFile(DefaultSettingsFilename, data, 0700)
 }
 
 // Validate will validate the settings fields.

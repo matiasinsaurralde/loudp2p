@@ -28,8 +28,7 @@ func NewEventHandler() (eventHandler EventHandler) {
 
 // AddListener initializes a listener channel and returns a pointer to it.
 func (e *EventHandler) AddListener() *chan (*Event) {
-	var eventChan chan (*Event)
-	eventChan = make(chan *Event)
+	var eventChan = make(chan *Event)
 	e.Listeners = append(e.Listeners, &eventChan)
 	return &eventChan
 }
